@@ -46,7 +46,6 @@ const App = () => {
 
   /**
    * 【修改点 2：主题配色】
-   * bg: 背景色, text: 文字色, box: 方块底色, border: 边框色, dim: 未激活/辅助色, accent: 强调色(金色等)
    */
   useEffect(() => {
     const themes = {
@@ -70,11 +69,7 @@ const App = () => {
   }, [theme]);
 
   /**
-   * 【修改点 3：添加/修改应用】
-   * 按照 id 数值往下排即可。
-   * name: 显示的名称
-   * url: 链接地址 (如果设为 null 则不会跳转)
-   * icon: 使用上面 ICONS 对象里的图标名称
+   * 【修改点 3：应用数据逻辑】
    */
   const appData = Array.from({ length: totalApps }, (_, i) => {
     const id = i + 1;
@@ -84,10 +79,6 @@ const App = () => {
     if (id === 3) return { name: "悟空卡牌", url: "https://kapai.wukong.lol/", icon: ICONS.command };
     if (id === 4) return { name: "悟空BNS提取", url: "https://www.kang.meme/bns", icon: ICONS.command };
     
-    // 如果你要加第 5 个，就在这里写：
-    // if (id === 5) return { name: "你的新应用", url: "你的链接", icon: ICONS.hexagon };
-
-    // 默认占位方块（不修改）
     return { 
       name: `App ${String(id).padStart(3, '0')}`, 
       url: null, 
@@ -107,14 +98,14 @@ const App = () => {
   const currentApps = appData.slice((currentPage - 1) * appsPerPage, currentPage * appsPerPage);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden select-none">
-      {/* 顶部风格切换按钮 */}
-      <div className="absolute top-8 right-8 flex gap-3 z-50">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-x-hidden select-none">
+      {/* 顶部风格切换按钮 - 手机端缩小尺寸并微调位置 */}
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 md:gap-3 z-50">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
             key={t}
             onClick={() => setTheme(t)}
-            className={`cursor-pointer text-[10px] uppercase tracking-widest px-2 py-1 border transition-all duration-300 ${
+            className={`cursor-pointer text-[9px] md:text-[10px] uppercase tracking-widest px-1.5 py-0.5 md:px-2 md:py-1 border transition-all duration-300 ${
               theme === t 
                 ? 'border-[var(--accent)] text-[var(--text-main)]' 
                 : 'border-[var(--box-border)] text-[var(--text-dim)] hover:text-[var(--text-main)]'
@@ -125,18 +116,17 @@ const App = () => {
         ))}
       </div>
 
-      {/* 标题 */}
-      <header className="mb-12 text-center">
-        <h1 className="text-[1.25rem] font-light tracking-[0.6rem] uppercase opacity-90">
+      {/* 标题 - 手机端减小字号和间距 */}
+      <header className="mb-8 md:mb-12 text-center mt-8 md:mt-0">
+        <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
           WUKONG.LOL
         </h1>
       </header>
 
-      {/* 方阵区域 */}
-      <div className="w-full max-w-[700px] px-4 flex items-center justify-center min-h-[280px]">
-        {/* 【修改点 4：如果你想改变格子数量，修改下面的 grid-cols-2 (手机) 和 md:grid-cols-5 (电脑) 】 */}
+      {/* 方阵区域 - 手机端保持2列，电脑端保持5列，间距自适应 */}
+      <div className="w-full max-w-[700px] px-2 md:px-4 flex items-center justify-center">
         <div 
-          className={`grid grid-cols-2 md:grid-cols-5 gap-6 w-full transition-all duration-200 ${
+          className={`grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 w-full transition-all duration-200 ${
             isFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
           }`}
         >
@@ -150,27 +140,27 @@ const App = () => {
                 href={app.url || undefined}
                 target={isLink ? "_blank" : undefined}
                 rel={isLink ? "noopener noreferrer" : undefined}
-                className={`aspect-square bg-[var(--box-bg)] border border-[var(--box-border)] flex flex-col items-center justify-center text-center p-3 rounded-sm no-underline text-[var(--text-dim)] transition-all duration-300 
+                className={`aspect-square bg-[var(--box-bg)] border border-[var(--box-border)] flex flex-col items-center justify-center text-center p-2.5 md:p-3 rounded-sm no-underline text-[var(--text-dim)] transition-all duration-300 
                   hover:border-[var(--accent)] hover:text-[var(--text-main)] hover:-translate-y-1 
                   ${isLink ? 'cursor-pointer' : 'cursor-default'}`}
               >
-                <div className="w-6 h-6 mb-3 flex items-center justify-center">
+                <div className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 flex items-center justify-center">
                   {app.icon}
                 </div>
-                <span className="text-[10px] tracking-tight">{app.name}</span>
+                <span className="text-[9px] md:text-[10px] tracking-tight truncate w-full px-1">{app.name}</span>
               </Element>
             );
           })}
         </div>
       </div>
 
-      {/* 分页按钮 */}
-      <nav className="mt-16 flex gap-5 justify-center">
+      {/* 分页按钮 - 手机端允许换行并微调字号 */}
+      <nav className="mt-10 md:mt-16 flex gap-3 md:gap-5 justify-center flex-wrap px-4">
         {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
           <button
             key={num}
             onClick={() => handlePageChange(num)}
-            className={`cursor-pointer text-[13px] px-1 py-1 transition-all duration-300 ${
+            className={`cursor-pointer text-[12px] md:text-[13px] px-1.5 py-1 transition-all duration-300 ${
               currentPage === num 
                 ? 'text-[var(--text-main)] border-b border-[var(--accent)] font-medium' 
                 : 'text-[var(--text-dim)] hover:text-[var(--text-main)]'
@@ -181,7 +171,7 @@ const App = () => {
         ))}
       </nav>
 
-      {/* 基础样式 (通常不需要动) */}
+      {/* 基础样式 */}
       <style>{`
         :root {
           --box-bg: #25201a;
@@ -194,6 +184,7 @@ const App = () => {
           margin: 0;
           padding: 0;
           transition: background-color 0.5s ease;
+          overflow-x: hidden;
         }
       `}</style>
     </div>
