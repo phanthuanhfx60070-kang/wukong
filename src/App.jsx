@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-// SVG 图标库 - 采用纤细线条设计
+/**
+ * 【修改点 1：图标库】
+ * 如果你想换图标，可以去 https://lucide.dev/icons 找喜欢的图标，
+ * 然后把 SVG 的 path 代码复制到这里。
+ */
 const ICONS = {
   hourglass: (
     <svg viewBox="0 0 24 24" className="w-full h-full stroke-current fill-none" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,15 +36,18 @@ const ICONS = {
 };
 
 const App = () => {
-  const [theme, setTheme] = useState('gold'); // 默认大圣风格
+  const [theme, setTheme] = useState('gold'); 
   const [currentPage, setCurrentPage] = useState(1);
   const [isFading, setIsFading] = useState(false);
 
-  const totalApps = 100;
-  const appsPerPage = 10;
+  const totalApps = 100; // 总格数
+  const appsPerPage = 10; // 每页显示格数
   const geoIcons = ['circle', 'square', 'triangle', 'hexagon', 'command'];
 
-  // 动态更新主题色彩
+  /**
+   * 【修改点 2：主题配色】
+   * bg: 背景色, text: 文字色, box: 方块底色, border: 边框色, dim: 未激活/辅助色, accent: 强调色(金色等)
+   */
   useEffect(() => {
     const themes = {
       gold: { bg: '#1a1612', text: '#e2d5bc', box: '#25201a', border: '#3d352a', dim: '#8c7e6a', accent: '#d4af37' },
@@ -62,25 +69,25 @@ const App = () => {
     root.style.setProperty('--accent', colors.accent);
   }, [theme]);
 
-  // 构建数据
+  /**
+   * 【修改点 3：添加/修改应用】
+   * 按照 id 数值往下排即可。
+   * name: 显示的名称
+   * url: 链接地址 (如果设为 null 则不会跳转)
+   * icon: 使用上面 ICONS 对象里的图标名称
+   */
   const appData = Array.from({ length: totalApps }, (_, i) => {
     const id = i + 1;
     
-    // 1. 悟空时光器
     if (id === 1) return { name: "悟空时光器", url: "http://year.wukong.lol/", icon: ICONS.hourglass };
-    
-    // 2. 悟空倒计时
     if (id === 2) return { name: "悟空倒计时", url: "https://react.wukong.lol/", icon: ICONS.timer };
-    
-    // 3. 悟空卡牌
     if (id === 3) return { name: "悟空卡牌", url: "https://kapai.wukong.lol/", icon: ICONS.command };
-
-    // 4. 悟空BNS 提取工具
     if (id === 4) return { name: "悟空BNS提取", url: "https://www.kang.meme/bns", icon: ICONS.command };
+    
+    // 如果你要加第 5 个，就在这里写：
+    // if (id === 5) return { name: "你的新应用", url: "你的链接", icon: ICONS.hexagon };
 
-    // 其余为占位方块
-    // 注意：下面的 ${id} 是自动生成的，如果你不写上面的 if (id === 4)，
-    // 这里会自动显示为 "App 004"，所以你不需要手动改这一行。
+    // 默认占位方块（不修改）
     return { 
       name: `App ${String(id).padStart(3, '0')}`, 
       url: null, 
@@ -101,7 +108,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden select-none">
-      {/* 风格切换 */}
+      {/* 顶部风格切换按钮 */}
       <div className="absolute top-8 right-8 flex gap-3 z-50">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
@@ -118,15 +125,16 @@ const App = () => {
         ))}
       </div>
 
-      {/* 极简标题 */}
+      {/* 标题 */}
       <header className="mb-12 text-center">
         <h1 className="text-[1.25rem] font-light tracking-[0.6rem] uppercase opacity-90">
           WUKONG.LOL
         </h1>
       </header>
 
-      {/* 方阵展示 */}
+      {/* 方阵区域 */}
       <div className="w-full max-w-[700px] px-4 flex items-center justify-center min-h-[280px]">
+        {/* 【修改点 4：如果你想改变格子数量，修改下面的 grid-cols-2 (手机) 和 md:grid-cols-5 (电脑) 】 */}
         <div 
           className={`grid grid-cols-2 md:grid-cols-5 gap-6 w-full transition-all duration-200 ${
             isFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
@@ -156,7 +164,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* 分页导航 */}
+      {/* 分页按钮 */}
       <nav className="mt-16 flex gap-5 justify-center">
         {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
           <button
@@ -173,6 +181,7 @@ const App = () => {
         ))}
       </nav>
 
+      {/* 基础样式 (通常不需要动) */}
       <style>{`
         :root {
           --box-bg: #25201a;
