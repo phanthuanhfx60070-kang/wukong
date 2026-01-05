@@ -99,8 +99,16 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-x-hidden select-none">
-      {/* 顶部风格切换按钮 - 手机端缩小尺寸并微调位置 */}
-      <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 md:gap-3 z-50">
+      
+      {/* 标题 - 手机端保持极简间距 */}
+      <header className="mb-4 md:mb-12 text-center mt-4 md:mt-0">
+        <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
+          WUKONG.LOL
+        </h1>
+      </header>
+
+      {/* 风格切换按钮 - 手机端对齐第一排右侧方块右边缘，电脑端保持绝对定位右上角 */}
+      <div className="relative md:absolute md:top-8 md:right-8 flex gap-2 md:gap-3 z-50 justify-end w-full max-w-[700px] px-2 mb-3 md:mb-0">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
             key={t}
@@ -116,14 +124,7 @@ const App = () => {
         ))}
       </div>
 
-      {/* 标题 - 手机端减小字号和间距 */}
-      <header className="mb-8 md:mb-12 text-center mt-8 md:mt-0">
-        <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
-          WUKONG.LOL
-        </h1>
-      </header>
-
-      {/* 方阵区域 - 手机端保持2列，电脑端保持5列，间距自适应 */}
+      {/* 方阵区域 - 手机端保持2列，电脑端保持5列 */}
       <div className="w-full max-w-[700px] px-2 md:px-4 flex items-center justify-center">
         <div 
           className={`grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 w-full transition-all duration-200 ${
@@ -154,13 +155,13 @@ const App = () => {
         </div>
       </div>
 
-      {/* 分页按钮 - 手机端允许换行并微调字号 */}
-      <nav className="mt-10 md:mt-16 flex gap-3 md:gap-5 justify-center flex-wrap px-4">
+      {/* 分页按钮 - 手机端强制一排显示 (不换行) */}
+      <nav className="mt-10 md:mt-16 flex gap-2 md:gap-5 justify-center flex-nowrap overflow-x-auto max-w-full px-4 scrollbar-hide">
         {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
           <button
             key={num}
             onClick={() => handlePageChange(num)}
-            className={`cursor-pointer text-[12px] md:text-[13px] px-1.5 py-1 transition-all duration-300 ${
+            className={`cursor-pointer text-[12px] md:text-[13px] px-2 py-1 transition-all duration-300 whitespace-nowrap ${
               currentPage === num 
                 ? 'text-[var(--text-main)] border-b border-[var(--accent)] font-medium' 
                 : 'text-[var(--text-dim)] hover:text-[var(--text-main)]'
@@ -185,6 +186,14 @@ const App = () => {
           padding: 0;
           transition: background-color 0.5s ease;
           overflow-x: hidden;
+        }
+        /* 隐藏滚动条但保留功能 */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
