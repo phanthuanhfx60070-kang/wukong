@@ -75,7 +75,9 @@ const App = () => {
     // 3. 悟空卡牌
     if (id === 3) return { name: "悟空卡牌", url: "https://kapai.wukong.lol/", icon: ICONS.command };
 
-      
+    // 4. 悟空BNS 提取工具
+    if (id === 3) return { name: "悟空BNS提取", url: "https://www.kang.meme/bns", icon: ICONS.command };
+
     // 其余为占位方块
     // 注意：下面的 ${id} 是自动生成的，如果你不写上面的 if (id === 4)，
     // 这里会自动显示为 "App 004"，所以你不需要手动改这一行。
