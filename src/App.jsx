@@ -100,15 +100,8 @@ const App = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-x-hidden select-none">
       
-      {/* 标题 - 手机端保持极简间距 */}
-      <header className="mb-4 md:mb-12 text-center mt-4 md:mt-0">
-        <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
-          WUKONG.LOL
-        </h1>
-      </header>
-
-      {/* 风格切换按钮 - 手机端对齐第一排右侧方块右边缘，电脑端保持绝对定位右上角 */}
-      <div className="relative md:absolute md:top-8 md:right-8 flex gap-2 md:gap-3 z-50 justify-end w-full max-w-[700px] px-2 mb-3 md:mb-0">
+      {/* 风格切换按钮 - 手机端放在最上方并对齐方阵右边缘，电脑端保持右上角定位 */}
+      <div className="relative md:absolute md:top-8 md:right-8 flex gap-2 md:gap-3 z-50 justify-end w-full max-w-[700px] px-2 mb-2 md:mb-0">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
             key={t}
@@ -123,6 +116,13 @@ const App = () => {
           </button>
         ))}
       </div>
+
+      {/* 标题 - 手机端位于风格切换按钮下方 */}
+      <header className="mb-8 md:mb-12 text-center">
+        <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
+          WUKONG.LOL
+        </h1>
+      </header>
 
       {/* 方阵区域 - 手机端保持2列，电脑端保持5列 */}
       <div className="w-full max-w-[700px] px-2 md:px-4 flex items-center justify-center">
@@ -155,7 +155,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* 分页按钮 - 手机端强制一排显示 (不换行) */}
+      {/* 分页按钮 - 手机端强制一排显示 */}
       <nav className="mt-10 md:mt-16 flex gap-2 md:gap-5 justify-center flex-nowrap overflow-x-auto max-w-full px-4 scrollbar-hide">
         {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
           <button
