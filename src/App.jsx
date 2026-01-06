@@ -70,12 +70,10 @@ const App = () => {
 
   /**
    * 【修改点 3：应用数据逻辑】
-   * 注意：所有链接已更新为 https 以兼容钱包内置浏览器
    */
   const appData = Array.from({ length: totalApps }, (_, i) => {
     const id = i + 1;
     
-    // 统一改为 https://
     if (id === 1) return { name: "悟空时光器", url: "https://year.wukong.lol/", icon: ICONS.hourglass };
     if (id === 2) return { name: "悟空倒计时", url: "https://react.wukong.lol/", icon: ICONS.timer };
     if (id === 3) return { name: "悟空卡牌", url: "https://kapai.wukong.lol/", icon: ICONS.command };
@@ -97,12 +95,24 @@ const App = () => {
     }, 150);
   };
 
+  /**
+   * 清净跳转处理
+   * 通过 JS 手动打开窗口，通常可以绕过 GTAG 对链接的自动“装饰” (Decoration)
+   */
+  const handleLinkClick = (e, url) => {
+    if (!url) return;
+    // 阻止默认跳转行为，防止追踪脚本捕获并修改 URL
+    e.preventDefault();
+    // 使用 window.open 手动跳转，保持 URL 干净
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const currentApps = appData.slice((currentPage - 1) * appsPerPage, currentPage * appsPerPage);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-x-hidden select-none">
       
-      {/* 风格切换按钮 - 手机端保持靠右对齐 */}
+      {/* 风格切换按钮 */}
       <div className="relative md:absolute md:top-8 md:right-8 flex gap-2 md:gap-3 z-50 justify-end w-full max-w-[700px] px-2 mb-2 md:mb-0">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
@@ -141,8 +151,8 @@ const App = () => {
               <Element
                 key={index}
                 href={app.url || undefined}
-                target={isLink ? "_blank" : undefined}
-                rel={isLink ? "noopener noreferrer" : undefined}
+                // 使用自定义点击事件处理跳转，确保地址栏干净
+                onClick={(e) => isLink && handleLinkClick(e, app.url)}
                 className={`aspect-square bg-[var(--box-bg)] border border-[var(--box-border)] flex flex-col items-center justify-center text-center p-2.5 md:p-3 rounded-sm no-underline text-[var(--text-dim)] transition-all duration-300 
                   hover:border-[var(--accent)] hover:text-[var(--text-main)] hover:-translate-y-1 
                   ${isLink ? 'cursor-pointer' : 'cursor-default'}`}
