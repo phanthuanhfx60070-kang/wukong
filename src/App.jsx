@@ -70,11 +70,13 @@ const App = () => {
 
   /**
    * 【修改点 3：应用数据逻辑】
+   * 注意：所有链接已更新为 https 以兼容钱包内置浏览器
    */
   const appData = Array.from({ length: totalApps }, (_, i) => {
     const id = i + 1;
     
-    if (id === 1) return { name: "悟空时光器", url: "http://year.wukong.lol/", icon: ICONS.hourglass };
+    // 统一改为 https://
+    if (id === 1) return { name: "悟空时光器", url: "https://year.wukong.lol/", icon: ICONS.hourglass };
     if (id === 2) return { name: "悟空倒计时", url: "https://react.wukong.lol/", icon: ICONS.timer };
     if (id === 3) return { name: "悟空卡牌", url: "https://kapai.wukong.lol/", icon: ICONS.command };
     if (id === 4) return { name: "悟空BNS提取", url: "https://www.kang.meme/bns", icon: ICONS.command };
@@ -100,7 +102,7 @@ const App = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-x-hidden select-none">
       
-      {/* 风格切换按钮 - 手机端放在最上方并对齐方阵右边缘，电脑端保持右上角定位 */}
+      {/* 风格切换按钮 - 手机端保持靠右对齐 */}
       <div className="relative md:absolute md:top-8 md:right-8 flex gap-2 md:gap-3 z-50 justify-end w-full max-w-[700px] px-2 mb-2 md:mb-0">
         {['gold', 'dark', 'light', 'cyber'].map((t) => (
           <button
@@ -117,14 +119,14 @@ const App = () => {
         ))}
       </div>
 
-      {/* 标题 - 手机端位于风格切换按钮下方 */}
+      {/* 标题 */}
       <header className="mb-8 md:mb-12 text-center">
         <h1 className="text-[1.1rem] md:text-[1.25rem] font-light tracking-[0.4rem] md:tracking-[0.6rem] uppercase opacity-90">
           WUKONG.LOL
         </h1>
       </header>
 
-      {/* 方阵区域 - 手机端保持2列，电脑端保持5列 */}
+      {/* 方阵区域 */}
       <div className="w-full max-w-[700px] px-2 md:px-4 flex items-center justify-center">
         <div 
           className={`grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 w-full transition-all duration-200 ${
@@ -155,7 +157,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* 分页按钮 - 手机端强制一排显示 */}
+      {/* 分页按钮 */}
       <nav className="mt-10 md:mt-16 flex gap-2 md:gap-5 justify-center flex-nowrap overflow-x-auto max-w-full px-4 scrollbar-hide">
         {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
           <button
@@ -172,7 +174,6 @@ const App = () => {
         ))}
       </nav>
 
-      {/* 基础样式 */}
       <style>{`
         :root {
           --box-bg: #25201a;
@@ -187,7 +188,6 @@ const App = () => {
           transition: background-color 0.5s ease;
           overflow-x: hidden;
         }
-        /* 隐藏滚动条但保留功能 */
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
